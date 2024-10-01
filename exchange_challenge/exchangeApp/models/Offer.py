@@ -1,19 +1,15 @@
 from django.db import models
-import uuid
+from .wallet import Wallet
 
-class Offer(models.Model):
-    offer_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    # Relaciones con otros modelos (Foreign Keys)
-    publisher = models.ForeignKey('Wallet', on_delete=models.CASCADE, related_name='offers')  # Relación con el modelo Wallet
-    asset = models.ForeignKey('Asset', on_delete=models.CASCADE, related_name='offers')  # Relación con el modelo Asset
-
-    # Campos específicos de la tabla 'Offer'
+class Offers(models.Model):
+    offer_id = models.AutoField(primary_key=True, null=False, unique=True, blank=False)
+    publisherWallet = models.ForeignKey("Wallet", on_delete=models.SET_NULL, null=True, blank=True)
     OFFER_TYPES = [
         ('buy', 'Buy'),
         ('sell', 'Sell'),
     ]
-
-    order_type = models.CharField(max_length=4, choices=OFFER_TYPES, default='buy')  # Enumeración para tipo de oferta
-    price = models.DecimalField(max_digits=10, decimal_places=4)  # Campo para el precio con precisión decimal
+    order_type = models.CharField(max_length=4, choices=OFFER_TYPES, default='buy')
+    price = models.DecimalField(max_digits=10,decimal_places=4)
     
+    def __str__(self):
+        return f"Offer {self.offer_id}: {self.get_order_type_display()} at {self.price}"
