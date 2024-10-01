@@ -1,10 +1,10 @@
 from django.db import models
-from .favorites import Favorites
+from .favorite import Favorites
 from .asset import Asset
 
 class AssetsToFavorites(models.Model):
-    favorite = models.ForeignKey(Favorites, on_delete=models.CASCADE)
-    asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
+    favorite = models.ForeignKey('Favorites', on_delete=models.CASCADE)
+    asset = models.ForeignKey('Asset', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('favorite', 'asset')
