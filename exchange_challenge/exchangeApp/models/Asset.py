@@ -1,10 +1,11 @@
 from django.db import models
-from .crypto import Cryptos
+from .crypto import Crypto
+from .stock import Stock
 
 class Asset(models.Model):
     asset_id = models.AutoField(primary_key=True, null=False, unique=True, blank=False)
-    crypto_symbol = models.ForeignKey('Cryptos')
-    stock_symbol = models.CharField(max_length=10, unique=True, null=True, blank=True)
+    crypto_symbol = models.ForeignKey('Crypto',on_delete=models.CASCADE)
+    stock_symbol = models.ForeignKey('Stock',on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
